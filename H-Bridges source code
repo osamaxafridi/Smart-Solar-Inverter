@@ -1,0 +1,36 @@
+CCP1CON = 0x00;
+ CCP2CON = 0x00;
+ dead_time();
+
+ CCPR1L = duty1 >> 2;
+ CCP1CON = 0x0C;
+ CCP1CON.B5 = duty1 & 0x03;
+ dead_time();
+
+ CCPR2L = duty2 >> 2;
+ CCP2CON = 0x0C;
+ CCP2CON.B5 = duty2 & 0x03;
+ index = (index + 1) % 64;
+ }
+}
+void main() {
+TRISD=0x00;
+
+
+ TRISC.F2 = 0;
+ TRISC.F1 = 0;
+ PR2 = 255;
+ T2CON = 0x04;
+ T1CON = 0x01;
+ TMR1H = 0x3C;
+ TMR1L = 0xB0;
+ PIE1.TMR1IE = 1;
+ INTCON.PEIE = 1;
+ INTCON.GIE = 1;
+ CCP1CON = 0x00;
+ CCP2CON = 0x00;
+ while(1){
+ PORTD=1;delay_ms(10); PORTD=0;
+ PORTD=2;delay_ms(10); PORTD=0;
+ }
+}
